@@ -26,10 +26,11 @@ try {
             weight: weight.metric,
             lifespan: life_span,
         }
-        console.log(dog)
+        //console.log(dog)
         return res.status(200).json(dog);
     }
-    // si es mayor a 259 significa que recibe un perro de la DB
+    if(id && id > 259) throw new Error(`There are no dogs with the ID: ${id}.`);
+    // si es un valor distinto a un nro entre 1 y 259 significa que recibe un perro de la DB
     const dog = await Dog.findByPk(id)
     if(!dog) throw new Error(`There are no dogs with the ID: ${id}.`)
     return res.status(200).send(dog);

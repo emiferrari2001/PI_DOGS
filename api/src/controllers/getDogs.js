@@ -37,8 +37,6 @@ try {
             
             //si no hay valores en ninguno de los dos
             throw new Error('The name sent by query has no dogs associated to it');
-        
-        //deberia retornar cada uno con los valores que me interesan
     }
     //si no se pasa nombre por query
     if (allDogs) return res.status(200).send(allDogs.data);

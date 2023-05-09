@@ -5,11 +5,10 @@ module.exports = (sequelize) => {
   // defino el modelo
   sequelize.define('dog', {
     id: {
-      type: DataTypes.INTEGER,
-        allowNull: false,
-        primaryKey: true,
-        autoIncrement: true,
-        initialAutoIncrement: 259, // Valor inicial del autoincremento
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      primaryKey: true
     },
     image: {
       type: DataTypes.STRING,
@@ -31,5 +30,7 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false
     }
+  }, {
+    timestamps: false
   });
 };
