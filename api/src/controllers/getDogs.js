@@ -13,33 +13,39 @@ console.log(URL)
 const getDogs = async(req, res) => {
     const {name} = req.query;
 try {
-    const allDogs = await axios(`${URL}?${API_KEY}`);
+    const allDogsApi = await axios(`${URL}?${API_KEY}`);
+    //despues de recorrer la api, tengo que revisar la DB
+    const dbDog = await Dog.findAll({
+        // where: {
+        //     name: {[Op.like]: `%${name}%`}
+        // }
+    });
+    dbDog.forEach(dog => console.log(dog.dataValues));
+    console.log(typeof dbDog);
     if (name) {
         console.log('hay name ', name);
-        const filteredDogs = allDogs.data.filter(dog => dog.name.toLowerCase().includes(name.toLowerCase()));
-        console.log(filteredDogs.length);
+        //filtro los valores de la API y de la DB por nombre
+        const filteredDogsApi = allDogsApi.data.filter(dog => dog.name.toLowerCase().includes(name.toLowerCase()));
+        const filteredDogsDb = dbDog.filter(dog => dog.dataValues.name.toLowerCase().includes(name.toLowerCase()));
+        console.log(filteredDogsApi.length);
         
-            //despues de recorrer la api, tengo que revisar la DB
-            const dbDog = await Dog.findAll({
-                where: {
-                    name: {[Op.like]: `%${name}%`}
-                }
-            });
             if(!dbDog.length) console.log('no hay en db')
 
             //si hay valores en la API y tambien en la DB, concateno los arrays
-            if(filteredDogs.length && dbDog.length) return res.status(200).send(...filteredDogs, ...dbDog)
+            if(filteredDogsApi.length && filteredDogsDb.length) return res.status(200).send(...filteredDogsApi, ...filteredDogsDb)
 
-            if(filteredDogs.length && !dbDog.length) return res.status(200).send(filteredDogs)
+            if(filteredDogsApi.length && !filteredDogsDb.length) return res.status(200).send(filteredDogsApi)
 
             //si no hay valores en la API pero si en la DB
-            if(dbDog.length && !filteredDogs.length) return res.status(200).send(dbDog)
+            if(filteredDogsDb.length && !filteredDogsApi.length) return res.status(200).send(filteredDogsDb)
             
             //si no hay valores en ninguno de los dos
             throw new Error('The name sent by query has no dogs associated to it');
     }
     //si no se pasa nombre por query
-    if (allDogs) return res.status(200).send(allDogs.data);
+    console.log(typeof allDogsApi)
+    const spreadApiDb = {...allDogsApi.data, ...dbDog}
+    if (allDogsApi) return res.status(200).send(Object.values(spreadApiDb));
 } catch (error) {
     return error.message.includes('name')
         ? res.status(404).send({error: error.message})
