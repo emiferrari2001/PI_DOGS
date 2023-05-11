@@ -8,12 +8,29 @@ const {Sequelize, Op } = require('sequelize');
 
 //ej de uso con api key: https://api.thedogapi.com/v1/breeds?api_key=live_Y1wWCrk2W2sIUyb72nLQgigiNk9LiKxhOoA9FRr9GZOjHaujrugZz2xaPbHVxKWb
 
-console.log(URL)
+//console.log(URL)
 
 const getDogs = async(req, res) => {
     const {name} = req.query;
 try {
-    const allDogsApi = await axios(`${URL}?${API_KEY}`);
+    const fetchApi = await axios(`${URL}?${API_KEY}`);
+    let allDogsApi =[]
+    //console.log(fetchApi.data[0])
+    fetchApi.data.map(dog=>{
+        const imgId = dog.reference_image_id;
+        //console.log(imgId)
+        const currDog = {
+            id: dog.id,
+            name: dog.name,
+            weight: dog.weight.metric,
+            height: dog.height.metric,
+            life_span: dog.life_span,
+            image: `https://cdn2.thedogapi.com/images/${imgId}.jpg`,
+            temperament: dog.temperament
+        }
+        allDogsApi.push(currDog)
+    })
+
     //despues de recorrer la api, tengo que revisar la DB
     const dbDog = await Dog.findAll({
         // where: {
@@ -43,8 +60,8 @@ try {
             throw new Error('The name sent by query has no dogs associated to it');
     }
     //si no se pasa nombre por query
-    console.log(typeof allDogsApi)
-    const spreadApiDb = {...allDogsApi.data, ...dbDog}
+    //console.log(typeof allDogsApi)
+    const spreadApiDb = {...allDogsApi, ...dbDog}
     if (allDogsApi) return res.status(200).send(Object.values(spreadApiDb));
 } catch (error) {
     return error.message.includes('name')
