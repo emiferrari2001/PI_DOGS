@@ -25,10 +25,13 @@ const getTemperaments = async(req, res)=>{
             const obj = {temperament: temperament};
             bulkTemperaments.push(obj)
         })
-
-        const createTemps = await Temperament.bulkCreate(bulkTemperaments, { ignoreDuplicates: true });
-        //console.log(createTemps);
-        if (createTemps) return res.status(200).send(createTemps);
+        const findTemps = await Temperament.findAll();
+        if(!findTemps.length){
+            const createTemps = await Temperament.bulkCreate(bulkTemperaments, { ignoreDuplicates: true });
+            //console.log(createTemps);
+            if (createTemps) return res.status(200).send(createTemps);
+        }
+        return res.status(200).send(findTemps);
       } catch (error) {
         //console.log(error);
         return res.status(500).send({ error: error.message });
