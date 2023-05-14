@@ -5,7 +5,7 @@ if(temperament){
     return(
         <div>
             <h3> {name} </h3>
-            <img src={image} alt={name} style={{ width: '400px', height: '200px' }} />
+            <img src={image} alt={name} style={{ width: '300px', height: '150px', justifyContent: 'center' }} />
             {
                 //console.log(typeof temperament)
                 Array.isArray(temperament) && temperament.map((temperament, index) => (

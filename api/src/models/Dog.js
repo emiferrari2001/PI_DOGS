@@ -26,7 +26,7 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING, //no es un valor numerico, es un rango
       allowNull: false,
     },
-    lifespan:{
+    life_span:{
       type: DataTypes.STRING,
       allowNull: false
     }

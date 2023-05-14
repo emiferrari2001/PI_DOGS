@@ -26,9 +26,9 @@ const getTemperaments = async(req, res)=>{
             bulkTemperaments.push(obj)
         })
 
-        const createTemps = await Temperament.bulkCreate(bulkTemperaments);
-        //console.log(bulkTemperaments);
-        if (createTemps) return res.status(200).send({ success: 'Temperaments stored in the database' });
+        const createTemps = await Temperament.bulkCreate(bulkTemperaments, { ignoreDuplicates: true });
+        //console.log(createTemps);
+        if (createTemps) return res.status(200).send(createTemps);
       } catch (error) {
         //console.log(error);
         return res.status(500).send({ error: error.message });

@@ -1,5 +1,12 @@
+import { useEffect } from "react";
+
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
-    const pageNumbers = [];
+  useEffect(()=>{
+    console.log(totalPages)
+    //currentPage =1;
+  }, [totalPages])  
+  
+  const pageNumbers = [];
   
     // Rango de paginacion que se muestra
 

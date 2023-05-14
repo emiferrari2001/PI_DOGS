@@ -1,4 +1,4 @@
-import { ALL_DOGS, FILTER, ORDER, RESET } from "./action_types";
+import { ALL_DOGS, ALL_TEMPERAMENTS, FILTER, ORDER, RESET } from "./action_types";
 import axios from 'axios';
 
 export const allDogs = ()=>{
@@ -10,6 +10,21 @@ export const allDogs = ()=>{
                 type: ALL_DOGS,
                 payload: data
             })
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+}
+
+export const allTemperaments=()=>{
+    const endpoint = 'http://localhost:3001/temperament';
+    return async (dispatch) => {
+        try {
+           const {data} = await axios.get(endpoint);
+           dispatch({
+            type: ALL_TEMPERAMENTS,
+            payload: data
+           }) 
         } catch (error) {
             console.log(error.message);
         }
