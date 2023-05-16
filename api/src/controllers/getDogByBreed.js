@@ -31,8 +31,15 @@ try {
     }
     if(id && id > 259) throw new Error(`There are no dogs with the ID: ${id}.`);
     // si es un valor distinto a un nro entre 1 y 259 significa que recibe un perro de la DB
-    const dog = await Dog.findByPk(id)
+    const dog = await Dog.findByPk(id);
     if(!dog) throw new Error(`There are no dogs with the ID: ${id}.`)
+
+    const currDogTemperaments = await dog.getTemperaments();
+    const temperamentArray = [];
+        currDogTemperaments.forEach((temperament) => {
+          temperamentArray.push(temperament.dataValues.temperament);
+        });
+        dog.dataValues.temperament = temperamentArray.join(", ");
     return res.status(200).send(dog);
 } catch (error) {
     return error.message.includes('ID')

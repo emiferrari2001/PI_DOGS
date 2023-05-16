@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { allTemperaments, filterDogs, orderDogs } from '../../redux/actions';
+import { allTemperaments, filterDogs, filterOrigin, orderDogs } from '../../redux/actions';
 
 const Filters = () => {
     const temperamentList = useSelector(state => state.temperaments);
@@ -30,14 +30,17 @@ const Filters = () => {
   };
 
   const toggleWeightOrder = (event) => {
-    const selectedValue = event.target.value;
-    
+    const selectedValue = event.target.value;    
     setWeightOrder((prevOrder) => (prevOrder === selectedValue ? '' : selectedValue));
+    dispatch(orderDogs(event.target.value))
     
   };
 
   const handleFilterTemperaments =(event)=>{
     dispatch(filterDogs(event.target.value));
+  }
+  const handleFilterOrigin =(event)=>{
+    dispatch(filterOrigin(event.target.value));
   }
 
   return (
@@ -87,7 +90,11 @@ const Filters = () => {
                             )
                         })
                     }
-                </select>              
+                </select> 
+                <select name="origin" onChange={handleFilterOrigin}>
+                    <option value="api">API</option>
+                    <option value="created">Created</option>
+                </select>          
             </div>
         </div>
     </div>

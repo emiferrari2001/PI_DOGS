@@ -1,4 +1,4 @@
-import { ALL_DOGS, ALL_TEMPERAMENTS, FILTER, ORDER, RESET } from "./action_types";
+import { ALL_DOGS, ALL_TEMPERAMENTS, FILTER, FILTER_ORIGIN, ORDER, RESET, SEARCH_DOGS } from "./action_types";
 import axios from 'axios';
 
 export const allDogs = ()=>{
@@ -12,6 +12,25 @@ export const allDogs = ()=>{
             })
         } catch (error) {
             console.log(error.message);
+        }
+    }
+}
+
+export const searchDogs = (name)=>{
+    const endpoint = `http://localhost:3001/dogs?name=${name}`;
+    return async (dispatch) => {
+        try {
+            const {data} = await axios.get(endpoint);
+            dispatch({
+                type: SEARCH_DOGS,
+                payload: data
+            })
+        } catch (error) {
+            console.log(error.message)
+            dispatch({
+                type: SEARCH_DOGS,
+                payload: `There are no dogs that match with the value "${name}"`
+            })
         }
     }
 }
@@ -34,6 +53,13 @@ export const allTemperaments=()=>{
 export const filterDogs = (filter) =>{
     return{
         type: FILTER,
+        payload: filter
+    }
+}
+
+export const filterOrigin = (filter) =>{
+    return{
+        type: FILTER_ORIGIN,
         payload: filter
     }
 }

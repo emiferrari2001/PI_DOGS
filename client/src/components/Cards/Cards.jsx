@@ -6,7 +6,7 @@ import Card from '../Card/Card';
 const Cards = ({ currentPage, dogsPerPage }) => {
   const dispatch = useDispatch();
   const allDogsList = useSelector(state => state.someDogs);
-  const order = useSelector(state => state.order);
+  const {order, filter} = useSelector(state => state);
   const [dogs, setDogs] = useState([]);
 
   const fetchDogs = useCallback(() => {
@@ -22,7 +22,7 @@ const Cards = ({ currentPage, dogsPerPage }) => {
     // Llamar a fetchDogs inicialmente, al montar el componente
     // y cuando se actualiza el order
     fetchDogs();
-  }, [fetchDogs, order]);
+  }, [fetchDogs, order, filter]);
 
   useEffect(() => {
     // Llamar a la acción de Redux para obtener todos los perros

@@ -54,7 +54,9 @@ try {
     //const perro = await Dog.findByPk(dbDog[0].id)
     //const temperaments = await perro.getTemperaments();
     //console.log('TEMPERAMENT 1',temperaments[0].dataValues.temperament)
-    dbDog.forEach(async(dog) => console.log('DATAVALUES', await dog.dataValues));
+    
+    //dbDog.forEach(async(dog) => console.log('DATAVALUES', await dog.dataValues));
+    
     //console.log("DBDOG",dbDog);
     if (name) {
         console.log('hay name ', name);

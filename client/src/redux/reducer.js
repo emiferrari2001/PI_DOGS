@@ -1,10 +1,12 @@
-import { ALL_DOGS, FILTER, ALL_TEMPERAMENTS, ORDER } from "./action_types";
+import { ALL_DOGS, FILTER, FILTER_ORIGIN, ALL_TEMPERAMENTS, ORDER, SEARCH_DOGS } from "./action_types";
 
 const initialState = {
     someDogs: [],
     allDogs: [],
     temperaments: [],
-    order: ''
+    order: '',
+    filter: '',
+    error: ''
 }
 
 const reducer = (state = initialState, action)=>{
@@ -13,12 +15,26 @@ const reducer = (state = initialState, action)=>{
             return{
                 ...state,
                 someDogs: action.payload,
-                allDogs: action.payload
+                allDogs: action.payload,
             };
+        case SEARCH_DOGS:
+            if(typeof action.payload === 'string') return{
+                ...state,
+                someDogs: [],
+                allDogs: state.allDogs,
+                error: action.payload
+            }
+            return{
+                ...state,
+                someDogs: action.payload,
+                allDogs: state.allDogs,
+                error: '',
+            }
         case ALL_TEMPERAMENTS:
             return{
                 ...state,
-                temperaments: action.payload
+                temperaments: action.payload,
+                error: '',
             };
         case FILTER:
             console.log('filter temperamentos', action.payload)
@@ -35,6 +51,26 @@ const reducer = (state = initialState, action)=>{
                 ...state,
                 someDogs: filterTemperament,
                 allDogs: state.allDogs
+            }
+        case FILTER_ORIGIN:
+            console.log('filter origin')
+            if (action.payload === 'api'){
+                const filterApi = state.allDogs.filter(dog => typeof dog.id === 'number' );
+                return {
+                    ...state,
+                    someDogs: filterApi,
+                    allDogs: state.allDogs,
+                    filter: 'api'
+                }
+            }
+            if (action.payload === 'created'){
+                const filterForm = state.allDogs.filter(dog => typeof dog.id !== 'number' );
+                return {
+                    ...state,
+                    someDogs: filterForm,
+                    allDogs: state.allDogs,
+                    filter: 'created'
+                }
             }
         case ORDER:
             if(action.payload === 'breedDesc'){
@@ -78,10 +114,10 @@ const reducer = (state = initialState, action)=>{
             if(action.payload === 'weightAsc'){
                 console.log('weightAsc')
                 const weightAsc = state.someDogs?.sort((a,b)=>{
-                    if (a.name.toLowerCase() < b.name.toLowerCase()) {
+                    if (Number(a.weight.split('-')[0]) < Number(b.weight.split('-')[0])) {
                         return -1;
                       }
-                      if (a.name.toLowerCase() > b.name.toLowerCase()) {
+                      if (Number(a.weight.split('-')[0]) > Number(b.weight.split('-')[0])) {
                         return 1;
                       }
                       return 0;
@@ -92,6 +128,25 @@ const reducer = (state = initialState, action)=>{
                     someDogs: weightAsc,
                     allDogs: state.allDogs,
                     order: 'weightAsc'
+                }
+            }
+            if(action.payload === 'weightDesc'){
+                console.log('weightDesc')
+                const weightDesc = state.someDogs?.sort((a,b)=>{
+                    if (Number(a.weight.split('-')[0]) > Number(b.weight.split('-')[0])) {
+                        return -1;
+                      }
+                      if (Number(a.weight.split('-')[0]) < Number(b.weight.split('-')[0])) {
+                        return 1;
+                      }
+                      return 0;
+                })
+                console.log(weightDesc[0])
+                return{
+                    ...state,
+                    someDogs: weightDesc,
+                    allDogs: state.allDogs,
+                    order: 'weightDesc'
                 }
             }
             break;
