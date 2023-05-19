@@ -17,15 +17,13 @@ try {
     let allDogsApi =[]
     //console.log(fetchApi.data[0])
     fetchApi.data.map(dog=>{
-        const imgId = dog.reference_image_id;
-        //console.log(imgId)
         const currDog = {
             id: dog.id,
             name: dog.name,
             weight: dog.weight.metric,
             height: dog.height.metric,
             life_span: dog.life_span,
-            image: `https://cdn2.thedogapi.com/images/${imgId}.jpg`,
+            image: dog.image.url,
             temperament: dog.temperament
         }
         allDogsApi.push(currDog)

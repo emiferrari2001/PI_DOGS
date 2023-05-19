@@ -1,4 +1,4 @@
-import { ALL_DOGS, FILTER, FILTER_ORIGIN, ALL_TEMPERAMENTS, ORDER, SEARCH_DOGS } from "./action_types";
+import { ALL_DOGS, FILTER, FILTER_ORIGIN, ALL_TEMPERAMENTS, ORDER, SEARCH_DOGS, RESET } from "./action_types";
 
 const initialState = {
     someDogs: [],
@@ -72,6 +72,7 @@ const reducer = (state = initialState, action)=>{
                     filter: 'created'
                 }
             }
+            break;
         case ORDER:
             if(action.payload === 'breedDesc'){
                 console.log('breedDesc')
@@ -150,6 +151,13 @@ const reducer = (state = initialState, action)=>{
                 }
             }
             break;
+            case RESET:
+                console.log('reset')
+                return{
+                    ...state,
+                    someDogs: state.allDogs,
+                    allDogs: state.allDogs
+                }
         default:
             return{
                 ...state,

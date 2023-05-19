@@ -11,7 +11,7 @@ const {Dog} = require('../db')
 const getDogs = async(req, res) => {
     const {id} = req.params;
 try {
-    if(id && id < 259){
+    if(id && id < 300){
         const result = await axios(`${URL}/${id}?${API_KEY}`);
         const {name, temperament, reference_image_id, height, weight, life_span} = result.data;
         if(!name) throw new Error(`There are no dogs with the ID: ${id}.`)
@@ -21,7 +21,7 @@ try {
             id: id,
             name: name,
             image: image,
-            temperament: temperament,
+            temperament: temperament ? temperament : '',
             height: height.metric,
             weight: weight.metric,
             lifespan: life_span,
@@ -29,7 +29,7 @@ try {
         //console.log(dog)
         return res.status(200).json(dog);
     }
-    if(id && id > 259) throw new Error(`There are no dogs with the ID: ${id}.`);
+    if(id && id > 300) throw new Error(`There are no dogs with the ID: ${id}.`);
     // si es un valor distinto a un nro entre 1 y 259 significa que recibe un perro de la DB
     const dog = await Dog.findByPk(id);
     if(!dog) throw new Error(`There are no dogs with the ID: ${id}.`)

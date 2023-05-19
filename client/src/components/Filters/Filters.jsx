@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { allTemperaments, filterDogs, filterOrigin, orderDogs } from '../../redux/actions';
+import { allTemperaments, filterDogs, filterOrigin, orderDogs, resetDogs } from '../../redux/actions';
 
 const Filters = () => {
     const temperamentList = useSelector(state => state.temperaments);
@@ -41,6 +41,10 @@ const Filters = () => {
   }
   const handleFilterOrigin =(event)=>{
     dispatch(filterOrigin(event.target.value));
+  }
+
+  const handleReset =()=>{
+    dispatch(resetDogs())
   }
 
   return (
@@ -96,6 +100,9 @@ const Filters = () => {
                     <option value="created">Created</option>
                 </select>          
             </div>
+        </div>
+        <div>
+            <button onClick={handleReset}>Reset</button>
         </div>
     </div>
   );

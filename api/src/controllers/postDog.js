@@ -4,7 +4,8 @@ const {Temperament} = require('../db');
 const postDog = async(req, res) =>{
     const {image, name, height, weight, temperaments, life_span } = req.body;
 try {
-    if(!image || !name || !height || !weight || !temperaments.length || !life_span ) throw new Error('There is information missing to create a new dog');
+    if(!image || !name || !height || !weight || !life_span ) throw new Error('There is information missing in order to create a new dog');
+    if (!temperaments.length) throw new Error('Please select at least one temperament for your dog')
     let temperament = []
     const pushTemperaments = temperaments?.forEach(async(currTemp) => {
         const tempIteration = await Temperament.findOne({ where: { id: currTemp } });
@@ -44,7 +45,10 @@ try {
     
 } catch (error) {
     //console.log(error.message);
-    return res.status(500).send({error: error.message})
+    return error.message.includes('dog')
+        ? res.status(404).send({error: error.message})
+        // error del servidor: error 500
+        : res.status(500).send({error: error.message});
 }
 }
 

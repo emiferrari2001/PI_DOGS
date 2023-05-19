@@ -11,7 +11,7 @@ module.exports = (sequelize) => {
       primaryKey: true
     },
     image: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     name: {

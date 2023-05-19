@@ -2,17 +2,17 @@ import axios from 'axios';
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { allTemperaments } from "../../redux/actions";
+import PopUp from '../PopUp/PopUp';
 
-let tempId = 0;
 const Form = ()=>{
     const temperamentList = useSelector(state => state.temperaments);
 
     const dispatch = useDispatch();
     
-    const [photoUrl, setPhotoUrl] = useState("");
+    //const [photoUrl, setPhotoUrl] = useState("");
     const [dogData, setDogData] = useState({
         name: '',
-        image: '',
+        image: 'https://png.pngtree.com/png-vector/20191018/ourmid/pngtree-dog-logo-design-vector-icon-png-image_1824202.jpg',
         weight: ['', ''],
         height: ['', ''],
         temperaments: [],
@@ -23,7 +23,7 @@ const Form = ()=>{
         image: '',
         weight: ['', ''],
         height: ['', ''],
-        temperament: [],
+        temperament: '',
         life_span: ''  
     })
 
@@ -33,7 +33,7 @@ const Form = ()=>{
             dispatch(allTemperaments());
             //console.log('dispatch')
         }
-    }, [])
+    }, [dispatch, temperamentList.length])
 
     const handleChanges = (event) => {
         const { name, value } = event.target;
@@ -90,7 +90,7 @@ const Form = ()=>{
     const validate = (name, value) => {
         switch (name) {
           case 'name':
-            const onlyLetters = /^[A-Za-z]+$/;
+            const onlyLetters = /^[a-zA-Z\s]+$/;
             const isValid = onlyLetters.test(value);
             setErrors({
               ...errors,
@@ -128,33 +128,48 @@ const Form = ()=>{
         }
       };
 
+      function convertBase64(file, callback) {
+        var lector = new FileReader();
+        lector.onloadend = function () {
+          callback(lector.result);
+        };
+        lector.readAsDataURL(file);
+      }
+
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
         const filename = file.name;
         const imageRegex = /\.(jpg|jpeg|png|gif|bmp)$/i;
         if (!imageRegex.test(filename)) {
-          // El archivo seleccionado no es una imagen válida
-          setErrors({
-            ...errors,
-            image: 'Please select a valid image file'
-          })
-          document.imgdog.src = 'https://png.pngtree.com/png-vector/20191018/ourmid/pngtree-dog-logo-design-vector-icon-png-image_1824202.jpg';
-          return;
+            // El archivo seleccionado no es una imagen válida
+            setErrors({
+                ...errors,
+                image: 'Please select a valid image file'
+            })
+            document.imgdog.src = 'https://png.pngtree.com/png-vector/20191018/ourmid/pngtree-dog-logo-design-vector-icon-png-image_1824202.jpg';
+            return;
         }
+        console.log('valid image')
+        convertBase64(file, function (base64) {
+            console.log(base64);
+            document.imgdog.src = base64;
+            //setPhotoUrl(base64);
+            setDogData({
+                ...dogData,
+                image: base64,
+            })
+            setErrors({
+                ...errors,
+                image: ''
+              })
+          });
       
-        const photoUrl = URL.createObjectURL(file);
-        setPhotoUrl(photoUrl);
-        console.log(photoUrl);
-        document.imgdog.src = photoUrl;
-        setDogData({
-            ...dogData,
-            image: photoUrl,
-        })
-        setErrors({
-            ...errors,
-            image: ''
-          })
+        //const photoUrl = URL.createObjectURL(file);
+        //setPhotoUrl(photoUrl);
+        //console.log(photoUrl);
+        //document.imgdog.src = photoUrl;
+        
       };
 
       const [addedTemperaments, setAddedTemperaments] = useState([]);
@@ -174,6 +189,10 @@ const Form = ()=>{
                 ...prevTemperaments,
                 currTemperament,
             ]);
+            setErrors({
+                ...errors,
+                temperament: ''
+            })
         }
       }
 
@@ -189,26 +208,65 @@ const Form = ()=>{
         dogData.temperaments = dogData.temperaments.filter(temperament => temperament !== foundTemperament.id)
       }
 
-      const handleSubmit = async (event) => {
-       
+      const [popUp, setPopUp] = useState(false)
+      const [popUpMessage, setPopUpMessage] = useState('')
+
+      const handleSubmit = async (event) => {       
             event.preventDefault();
-            dogData.weight = dogData.weight.join(' - ')
-            dogData.height = dogData.height.join(' - ')
-            dogData.life_span = dogData.life_span + ' years';
             try {
+                if(typeof dogData.weight !== 'string') dogData.weight = dogData.weight.join(' - ')
+                if(typeof dogData.height !== 'string')dogData.height = dogData.height.join(' - ')
+                if(typeof dogData.life_span !== 'string')dogData.life_span = dogData.life_span + ' years';
                 console.log(dogData)
+                console.log('image' + dogData.image)
               const response = await axios.post("http://localhost:3001/dogs", dogData);
-              console.log(response.data); // Puedes manejar la respuesta como desees
+              console.log(response.data);
+              if(response.data){
+                //reseteo el form y todos sus valores
+                const creationForm = document.getElementById("creationForm");
+                creationForm.reset();
+                document.imgdog.src = 'https://png.pngtree.com/png-vector/20191018/ourmid/pngtree-dog-logo-design-vector-icon-png-image_1824202.jpg';
+                setDogData({
+                    name: '',
+                    image: 'https://png.pngtree.com/png-vector/20191018/ourmid/pngtree-dog-logo-design-vector-icon-png-image_1824202.jpg',
+                    weight: ['', ''],
+                    height: ['', ''],
+                    temperaments: [],
+                    life_span: ''  
+                });
+                setAddedTemperaments([]);
+                setErrors({
+                    name: '',
+                    image: '',
+                    weight: ['', ''],
+                    height: ['', ''],
+                    temperament: '',
+                    life_span: ''  
+                });
+                setPopUp(true)
+                setPopUpMessage('Dog created successfully')
+                //alert("Dog created successfully");
+
+              }
             } catch (error) {
-              console.error(error.message);
+                setErrors({
+                    ...errors,
+                    temperament: error.response.data.error
+                })
+              //console.error(error.response.data.error);
             }
         
       };
 
     return(
         <div>
+            {
+                popUp === true && <PopUp trigger={popUp} setTrigger={setPopUp}>
+                    <h3>{popUpMessage}</h3>
+                </PopUp>
+            }
             <h2>Create Breed</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} id='creationForm'>
                 <label htmlFor="name">Breed name</label>
                 <input type="text" name="name" placeholder="Breed name" onChange={handleChanges} required/>
                 {
@@ -239,6 +297,7 @@ const Form = ()=>{
 
                 <label htmlFor="temperament">Temperaments</label>
                 <select name="temperament" onChange={handleTemperaments}>
+                    
                     {
                         temperamentList?.map(temperament =>{
                             return(
@@ -268,9 +327,11 @@ const Form = ()=>{
                     errors.image !== '' && <p>{errors.image}</p>
                 }
                 <br /><img name='imgdog' src="https://png.pngtree.com/png-vector/20191018/ourmid/pngtree-dog-logo-design-vector-icon-png-image_1824202.jpg" alt="Created dog" />
+                {
+                    errors.temperament !== '' && <p>{errors.temperament}</p>
+                }
                 <button>Submit</button>
 
-                
 
             </form>
             {/* {photoUrl && <img src={photoUrl} alt="Uploaded Photo" />} */}

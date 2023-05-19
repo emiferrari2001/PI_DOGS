@@ -17,18 +17,19 @@ const Detail = ()=>{
         })
         return setDog({})
     }, [id])
-    let number = 0;
+    //let number = 0;
     
 return(
     <div>
         
         <h3>Detail {dog.name}</h3>
-        <img src={dog.image} alt={dog.name} />
-        <p>Height: {dog.height} cm</p>
-        <p>Weight: {dog.weight}</p>
-        <p>Lifespan: {dog.lifespan}</p>
+        <img src={dog.image && dog.image} alt={dog.name} />
+        <p>Height (cm) {dog.height}</p>
+        <p>Weight (kg) {dog.weight}</p>
+        <p>Lifespan (years) {dog.lifespan?.split(' years')}</p>
         <p>Temperaments:</p>
-        <ul>
+        <p>{dog.temperament && dog.temperament}</p>
+        {/* <ul>
             {
                 dog.temperament?.split(' ').map(currTemperament =>{
                     console.log(currTemperament)
@@ -38,7 +39,7 @@ return(
                     )
                 })
             }
-        </ul>
+        </ul> */}
     </div>
 )
 }
