@@ -1,0 +1,10 @@
+.homeContainer{
+    width: 82%;
+    height: 100vh;
+    background-color: #faf5ed;
+    margin-left: auto;
+    overflow: hidden;
+}
+body{
+    overflow-y: hidden;
+}

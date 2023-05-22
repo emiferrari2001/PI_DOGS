@@ -1,9 +1,11 @@
 import { useEffect } from "react";
 
+import styles from './Pagination.module.css'
+
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   useEffect(()=>{
-    console.log(totalPages)
-    //currentPage =1;
+    
+    //actualizo el componente cuando cambia la cantidad de paginas
   }, [totalPages])  
   
   const pageNumbers = [];
@@ -21,9 +23,9 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     }
   
     return (
-      <div>
+      <div className={styles.paginationContainer}>
         <button disabled={currentPage === 1} onClick={() => onPageChange(currentPage - 1)}>
-          Prev
+        ‹
         </button>
         {pageNumbers.map((pageNumber) => (
           <button
@@ -35,7 +37,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           </button>
         ))}
         <button disabled={currentPage === totalPages} onClick={() => onPageChange(currentPage + 1)}>
-          Next
+        ›
         </button>
       </div>
     );

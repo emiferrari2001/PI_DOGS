@@ -1,0 +1,33 @@
+.sideBarHome{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 18%;
+    background-image: url('../../../img/bgPattern.png');
+    background-color: #fd8840;
+    background-repeat: repeat;
+    height: 100vh;
+    float: left;
+}
+
+.createButton{
+    margin-bottom: 13%;
+    background-color: #cb4425;
+    border: none;
+    padding: 2% 17%;
+    border-radius: 25px;
+    font-size: 1.5em;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+}
+
+.createButton:hover{
+    background-color: #ff7b29;
+}
+
+.createButton a {
+    color: #faf5ed;
+    text-decoration: none;
+}

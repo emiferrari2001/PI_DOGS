@@ -1,0 +1,13 @@
+.paginationContainer button{
+    font-size: 1.5em;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    background: none;
+    border: none;
+    margin-top: 1%;
+    color: #252a2a;
+}
+.paginationContainer button:disabled{
+    color: #cb4425;
+}
+
+    

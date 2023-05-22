@@ -5,3 +5,4 @@ export const FILTER = 'FILTER';
 export const FILTER_ORIGIN = 'FILTER_ORIGIN';
 export const ORDER = 'ORDER';
 export const RESET = 'RESET';
+export const SET_PAGE =  'SET_PAGE'

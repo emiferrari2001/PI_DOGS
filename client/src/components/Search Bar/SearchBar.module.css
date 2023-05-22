@@ -1,0 +1,34 @@
+.allBar{
+    margin-top: 15%;
+}
+
+.allBar div div div {
+  display: none;
+}
+.searchContainer {
+    position: relative;
+    margin-top: -6%;
+  }
+  
+  .searchContainer input[type="search"] {
+    padding-right: 40px;
+    padding-left: 8px;
+    border-radius: 30px;
+    line-height: 1.9;
+  }
+  
+  .searchContainer button {
+    top: 50%;
+    right: 6px;
+    transform: translateY(-50%);
+    position: absolute;
+    border: none;
+    background-color: transparent;
+    font-size: 1.2em;
+  }
+
+  .title{
+    color: #faf5ed;
+    font-style: italic;
+    font-size: 1.2em;
+  }

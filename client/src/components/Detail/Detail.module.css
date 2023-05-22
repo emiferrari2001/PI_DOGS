@@ -1,0 +1,75 @@
+.allDetail{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('../../../img/bgPattern.png');
+    background-color: #faf5ed;
+    background-repeat: repeat;
+    height: 100vh;
+}
+.detailCard{
+    width: 600px;
+    height: 810px;
+    box-shadow: -1px 1px 31px -10px rgba(0,0,0,0.69);
+    -webkit-box-shadow: -1px 1px 31px -10px rgba(0,0,0,0.69);
+    border-radius: 30px;
+    background-color: #faf5ed;
+}
+.detailCard h5{
+    color: #fd995b;
+    font-style: italic;
+    font-size: 1.5em;
+    font-weight: 400;
+    margin-top: 2%;
+    margin-bottom: 0%;
+}
+.detailCard img {
+    border-radius: 30px 30px 0px 0px;
+    width: 600px;
+    height: 400px;
+}
+.detailCard h3{
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    color: #252a2a;
+    font-size: 2em;
+    text-transform: uppercase;
+}
+.detailCard button{
+    background-color: #ff7b29;
+    border-radius: 15px;
+    padding: 1% 4%;
+    border: 0.1mm #faf5ed solid;
+    width: 80px;
+    margin: 0 3%;
+    margin-top: 7%;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+}
+
+.detailCard button a{
+    text-decoration: none;
+    color: #faf5ed;
+}
+
+.detailCard button:hover{
+    background-color: #cb4425;
+}
+.detailDivContainer{
+    display: flex;
+    justify-content: center;
+    gap: 20%;
+}
+.detailDivs h5{
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.2em;
+    margin-top: 0%;
+    margin-bottom: 45%;
+    color: #7D7C7A;
+}
+.detailDivs p{
+    margin-top: -25%;
+}
+.temperaments{
+    margin-top: 2%;
+}

@@ -7,15 +7,12 @@ import styles from './Cards.module.css';
 
 const Cards = ({ currentPage, dogsPerPage }) => {
   const dispatch = useDispatch();
-
-  //la lista de perros contiene a los actuales (someDogs)
   const allDogsList = useSelector(state => state.someDogs);
   const {order, filter} = useSelector(state => state);
   const [dogs, setDogs] = useState([]);
 
-  //useCallback para que no tener dependencias faltantes
   const fetchDogs = useCallback(() => {
-    // Defino el fragmento del array total a mostrar
+    // Definir el fragmento del array total a mostrar
     var firstIndex = (currentPage - 1) * dogsPerPage;
     var lastIndex = firstIndex + dogsPerPage;
     const dogsInPage = allDogsList.slice(firstIndex, lastIndex);
@@ -24,20 +21,18 @@ const Cards = ({ currentPage, dogsPerPage }) => {
   }, [currentPage, dogsPerPage, allDogsList]);
 
   useEffect(() => {
-    // Llamar a fetchDogs al montar el componente
-    // y cuando se actualiza el order o filter
+    // Llamar a fetchDogs inicialmente, al montar el componente
+    // y cuando se actualiza el order
     fetchDogs();
   }, [fetchDogs, order, filter]);
 
   useEffect(() => {
-    // Dispatch de acción de Redux para obtener todos los perros
-    if(!allDogsList.length) dispatch(allDogs());
-  }, [dispatch, allDogsList.length]);
+    // Llamar a la acción de Redux para obtener todos los perros
+    dispatch(allDogs());
+  }, [dispatch]);
 
   return (
     <div className={styles.cardsContainer}>
-      {/* si hay perros, los mapeo y por cada uno rendereo una Card
-      paso los valores por props */}
       {dogs?.map((dog) => {
         return(
             <Card

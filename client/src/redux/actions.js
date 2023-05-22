@@ -1,4 +1,4 @@
-import { ALL_DOGS, ALL_TEMPERAMENTS, FILTER, FILTER_ORIGIN, ORDER, RESET, SEARCH_DOGS } from "./action_types";
+import { ALL_DOGS, ALL_TEMPERAMENTS, FILTER, FILTER_ORIGIN, ORDER, RESET, SEARCH_DOGS, SET_PAGE } from "./action_types";
 import axios from 'axios';
 
 export const allDogs = ()=>{
@@ -74,5 +74,12 @@ export const orderDogs = (order) =>{
 export const resetDogs = ()=>{
     return{
         type: RESET,
+    }
+}
+
+export const setPageNumber = (number)=>{
+    return{
+        type: SET_PAGE,
+        payload: number
     }
 }

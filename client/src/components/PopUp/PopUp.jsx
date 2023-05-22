@@ -7,7 +7,9 @@ function PopUp(props) {
         <div className={styles.puContainer}>
             <div className={styles.puInner}>
                 <button className={styles.closeButton} onClick={()=> props.setTrigger(false)}>Close</button>
-                <button><NavLink to='/home'>Return to Home</NavLink></button>
+                <div>
+                <button className={styles.homeButton}><NavLink to='/home'>Return to Home</NavLink></button>
+                </div>
                 {props.children}
             </div>
         </div>

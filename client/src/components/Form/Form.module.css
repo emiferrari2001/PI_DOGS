@@ -1,0 +1,172 @@
+.twoThirds{
+    width: 66%;
+    height: 100vh;
+    background-color: #fd995b;
+    float: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+.oneThird {
+    width: 34%;
+    height: 100vh;
+    background-image: url('../../../img/bgPattern.png');
+    background-color: #faf5ed;
+    background-repeat: repeat;
+    float: right;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.oneThird img{
+    width: 400px;
+}
+.subDiv {
+    display: flex;
+    justify-content: center;
+    gap: 40%;
+}
+.twoThirds label{
+    float: left;
+    color: #faf5ed;
+    font-size: 1.2em;
+    margin-bottom: 4%;
+    font-weight: 300;
+}
+
+.twoThirds h2{
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-size: 2.5em;
+    color: #faf5ed;
+    margin-top: 4%;
+    text-transform: uppercase;
+}
+.twoThirds input{
+    background-color: #ffb07f;
+    padding: 12% 0;
+    padding-right: 33%;
+    padding-left: 8%;
+    color: #7D7C7A;
+    border: none;
+    border-radius: 5px;
+    text-align: left;
+    font-size: 1em;
+}
+
+.twoThirds input[type="number"]::-webkit-inner-spin-button,
+.twoThirds input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.twoThirds input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.twoThirds input[type="file"] {
+    /* Set the text color to transparent */
+    color: transparent;
+}
+
+
+.twoThirds select{
+    text-align: center;
+    width: 13em;
+    height: 2.5em;
+    background-color: #ffb07f;
+    color: #2a2625;
+    border-radius: 5px;
+    border: none;
+}
+
+.temperamentBox{
+    display: flex;
+    overflow: scroll; /* Enable scrolling */
+    scrollbar-width: thin; /* Set the width of the scrollbar */
+    scrollbar-color: transparent transparent; /* Set the color of the scrollbar (thumb and track) */
+    width: 90%;
+    gap: 1%;
+    justify-content: center; 
+}
+.temperamentBox::-webkit-scrollbar {
+    width: 0px; /* Set the width of the scrollbar */
+  }
+  
+  .temperamentBox::-webkit-scrollbar-thumb {
+    background-color: transparent; /* Set the color of the scrollbar thumb */
+    border: none; /* Remove the border */
+  }
+  
+  .temperamentBox::-webkit-scrollbar-track {
+    background-color: transparent; /* Set the color of the scrollbar track */
+    border: none; /* Remove the border */
+  }
+
+.temperamentBox div{
+    display: flex;
+    align-items: center;
+    background-color: #ff7b29;
+    border-radius: 5px;
+    color: #faf5ed;
+    padding: 0% 5%;
+    height: 43px;
+    gap: 30%;
+}
+
+.divImg{
+    display: flex;
+    align-items: center;
+    gap: 10%;
+    margin-left: 35%;
+}
+.temperamentBox button{
+    background: none;
+    border: none;
+}
+
+.divImg input{
+    background: none;
+    padding: none;
+}
+
+.submitButton{
+    margin-bottom: 6%;
+    background-color: #cb4425;
+    color: #faf5ed;
+    border: none;
+    padding: 1% 4%;
+    border-radius: 15px;
+    font-size: 1.2em;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+}
+
+.submitButton:hover{
+    background-color: #ff7b29;
+}
+
+.fileUpload{
+    margin-left: -15%;
+}
+
+  
+.fileUpload input[type="file"] {
+    display: none;
+  }
+  
+  .customButton {
+    background-color: #ff7b29;
+    color: #faf5ed;
+    border-radius: 25px;
+    width: 150px;
+    margin: 0 auto;
+    padding: 8% 0%; 
+    transition: background-color 0.3s ease;
+  }
+
+  .customButton:hover{
+    background-color: #cb4425;
+}
+

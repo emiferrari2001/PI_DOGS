@@ -1,0 +1,85 @@
+.filterContainer{
+    height: 75%;
+    margin-top: 20%;
+}
+.resetButton{
+    margin-top: -15%;
+}
+.resetButton button{
+    background-color: #cb4425;
+    border: none;
+    padding: 5% 25%;
+    border-radius: 25px;
+    color: #faf5ed;
+    font-size: 0.9em;
+}
+.filterContainer select{
+    text-align: center;
+    width: 13em;
+    height: 2.5em;
+    background-color: #ffb07f;
+    color: #2a2625;
+    border-radius: 5px;
+    border: none;
+}
+.orderContainer{
+    margin-top: 17%;
+}
+.orderContainer h3{
+    color: #faf5ed;
+    font-size: 1.6em;
+}
+
+.orderContainer h4{
+    font-style: italic;
+    color: #faf5ed;
+    font-weight: 400;
+    font-size: 1.2em;    
+}
+
+.breedContainer{
+    margin-top: 15%;
+}
+
+.ascDescButtons{
+    margin-top: -8%;
+    display: flex;
+}
+
+.ascDescButtons button{
+    background-color: #ff7b29;
+    color: #faf5ed;
+    border-radius: 15px;
+    padding: 4% 7%;
+    border: 0.1mm #faf5ed solid;
+    width: 80px;
+    margin: 0 3%;
+    font-size: 0.9em;   
+    transition: background-color 0.3s ease; 
+}
+
+.ascDescButtons button:hover{
+    background-color: #cb4425;
+}
+
+.ascDescButtons button.active{
+    background-color: #cb4425;
+}
+button:hover{
+    cursor: pointer;
+ }
+
+.filterContainer h3{
+    color: #faf5ed;
+    font-size: 1.6em;    
+}
+
+.filterContainer h4{
+    font-style: italic;
+    color: #faf5ed;
+    font-weight: 400;
+    font-size: 1.2em;  
+}
+.h4Title{
+    margin-bottom: 5%;
+}

@@ -1,4 +1,4 @@
-import { ALL_DOGS, FILTER, FILTER_ORIGIN, ALL_TEMPERAMENTS, ORDER, SEARCH_DOGS, RESET } from "./action_types";
+import { ALL_DOGS, FILTER, FILTER_ORIGIN, ALL_TEMPERAMENTS, ORDER, SEARCH_DOGS, RESET, SET_PAGE } from "./action_types";
 
 const initialState = {
     someDogs: [],
@@ -6,11 +6,21 @@ const initialState = {
     temperaments: [],
     order: '',
     filter: '',
-    error: ''
+    error: '',
+    currentPage: 1
 }
 
 const reducer = (state = initialState, action)=>{
     switch(action.type){
+        case RESET:
+            console.log('reset');
+            // Recursion a reduced para establecer el orden "breedAsc"
+            const newState = reducer(state, { type: ORDER, payload: 'breedAsc' }); 
+            return {
+                ...newState,
+                someDogs: newState.allDogs,
+                filter: ''
+            };
         case ALL_DOGS:
             return{
                 ...state,
@@ -44,32 +54,72 @@ const reducer = (state = initialState, action)=>{
                 allDogs: state.allDogs
             }
             //depende del temperamento filtro
-            //const log = state.allDogs.map(dog => console.log(dog))
-            //console.log(log)
             const filterTemperament = state.allDogs.filter(dog => dog.temperament?.includes(action.payload))
             return{
                 ...state,
+                filter: filterTemperament,
                 someDogs: filterTemperament,
                 allDogs: state.allDogs
+                
             }
         case FILTER_ORIGIN:
             console.log('filter origin')
+            if (action.payload === 'All'){
+                let combinedFilter =[];
+                let aux = state.filter;
+                console.log(state.filter)
+                if (typeof state.filter === 'object') {
+                    console.log('hay filter')
+                    combinedFilter = aux.filter(dog => dog.id )
+                    console.log(combinedFilter)
+                    return{
+                        ...state,
+                        someDogs: combinedFilter.length ? combinedFilter : state.allDogs,
+                        allDogs: state.allDogs,
+                    }
+                }
+                return{
+                    ...state,
+                    someDogs: combinedFilter.length ? combinedFilter : state.allDogs,
+                    allDogs: state.allDogs,
+                    filter: state.someDogs
+                }
+            }
             if (action.payload === 'api'){
+                console.log('typeof state.filter ',typeof state.filter)
+                let combinedFilter = [];
+                let aux = state.filter;
+                if(typeof state.filter === 'object'){
+                    console.log('combinedFilter')
+                    console.log(state.filter)
+                    combinedFilter = aux.filter(dog => typeof dog.id == 'number')
+                    console.log(combinedFilter)
+                }
                 const filterApi = state.allDogs.filter(dog => typeof dog.id === 'number' );
                 return {
                     ...state,
-                    someDogs: filterApi,
+                    someDogs: combinedFilter.length ? combinedFilter : filterApi,
                     allDogs: state.allDogs,
-                    filter: 'api'
+                    filter: combinedFilter.length ? state.filter : ''
+                    //filter: 'api'
                 }
             }
             if (action.payload === 'created'){
+                let combinedFilter = []
+                let aux = state.filter;
+                if(typeof state.filter === 'object'){
+                    console.log('combinedFilter')
+                    combinedFilter = aux.filter(dog => typeof dog.id !== 'number' )
+                    console.log(combinedFilter)
+                    console.log(state.filter)
+                }
                 const filterForm = state.allDogs.filter(dog => typeof dog.id !== 'number' );
                 return {
                     ...state,
-                    someDogs: filterForm,
+                    someDogs: combinedFilter.length ? combinedFilter : filterForm,
                     allDogs: state.allDogs,
-                    filter: 'created'
+                    filter: combinedFilter.length ? state.filter : ''
+                    //filter: 'created'
                 }
             }
             break;
@@ -151,13 +201,12 @@ const reducer = (state = initialState, action)=>{
                 }
             }
             break;
-            case RESET:
-                console.log('reset')
+            case SET_PAGE:
                 return{
                     ...state,
-                    someDogs: state.allDogs,
-                    allDogs: state.allDogs
+                    currentPage: action.payload
                 }
+            
         default:
             return{
                 ...state,
