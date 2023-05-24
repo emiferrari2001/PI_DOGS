@@ -11,7 +11,11 @@ export const allDogs = ()=>{
                 payload: data
             })
         } catch (error) {
-            console.log(error.message);
+            //envio mensaje para mostrar en popUp si hay problemas para conectar con la API
+            dispatch({
+                type: ALL_DOGS,
+                payload: "There's been an error connecting to the API"
+            })
         }
     }
 }
@@ -26,7 +30,6 @@ export const searchDogs = (name)=>{
                 payload: data
             })
         } catch (error) {
-            console.log(error.message)
             dispatch({
                 type: SEARCH_DOGS,
                 payload: `There are no dogs that match with the value "${name}"`
@@ -45,7 +48,10 @@ export const allTemperaments=()=>{
             payload: data
            }) 
         } catch (error) {
-            console.log(error.message);
+            dispatch({
+                type: ALL_DOGS,
+                payload: "There's been an error connecting to the API temperaments"
+            })
         }
     }
 }

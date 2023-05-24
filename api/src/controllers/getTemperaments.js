@@ -8,7 +8,6 @@ const getTemperaments = async(req, res)=>{
     try {
         const {data} = await axios(`${URL}?${API_KEY}`);
         let allTemperaments = [];
-        //console.log(data[0])
         data.forEach(dog => {
             if(dog.temperament){
                 const temperaments = dog.temperament.split(', ');

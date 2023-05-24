@@ -147,6 +147,11 @@
     background-color: #ff7b29;
 }
 
+.submitButton[disabled] {
+    opacity: 0.5; 
+    cursor: not-allowed;
+  }
+
 .fileUpload{
     margin-left: -15%;
 }
@@ -168,5 +173,10 @@
 
   .customButton:hover{
     background-color: #cb4425;
+}
+
+.errorP{
+    font-style: italic;
+    font-weight: 300;
 }
 

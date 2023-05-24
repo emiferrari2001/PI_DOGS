@@ -13,8 +13,7 @@ const initialState = {
 const reducer = (state = initialState, action)=>{
     switch(action.type){
         case RESET:
-            console.log('reset');
-            // Recursion a reduced para establecer el orden "breedAsc"
+            // Recursion a reducer para establecer el orden "breedAsc"
             const newState = reducer(state, { type: ORDER, payload: 'breedAsc' }); 
             return {
                 ...newState,
@@ -22,12 +21,20 @@ const reducer = (state = initialState, action)=>{
                 filter: ''
             };
         case ALL_DOGS:
+            //si de las actions llega un error el payload es string
+            if(typeof action.payload === 'string') return{
+                ...state,
+                error: action.payload
+            }
             return{
                 ...state,
                 someDogs: action.payload,
                 allDogs: action.payload,
+                error: '',
             };
         case SEARCH_DOGS:
+            //si de las actions llega un string es porque hubo un error
+            //seteo el payload en el valor de error y hago que no se muestre ningun perro
             if(typeof action.payload === 'string') return{
                 ...state,
                 someDogs: [],
@@ -47,7 +54,7 @@ const reducer = (state = initialState, action)=>{
                 error: '',
             };
         case FILTER:
-            console.log('filter temperamentos', action.payload)
+            //TEMPERAMENTS
             if(action.payload === 'All') return {
                 ...state,
                 someDogs: state.allDogs,
@@ -60,18 +67,13 @@ const reducer = (state = initialState, action)=>{
                 filter: filterTemperament,
                 someDogs: filterTemperament,
                 allDogs: state.allDogs
-                
             }
         case FILTER_ORIGIN:
-            console.log('filter origin')
             if (action.payload === 'All'){
                 let combinedFilter =[];
-                
-                console.log(state.filter)
                 if (typeof state.filter === 'object') {
                     //hay un valor en el estado global filter
                     combinedFilter = state.filter.filter(dog => dog.id )
-                    console.log(combinedFilter)
                     return{
                         ...state,
                         someDogs: combinedFilter.length ? combinedFilter : state.allDogs,
@@ -86,13 +88,10 @@ const reducer = (state = initialState, action)=>{
                 }
             }
             if (action.payload === 'api'){
-                console.log('typeof state.filter ',typeof state.filter)
                 let combinedFilter = [];
                 if(typeof state.filter === 'object'){
-                    console.log('combinedFilter')
-                    console.log(state.filter)
-                    combinedFilter = state.filter.filter(dog => typeof dog.id == 'number')
-                    console.log(combinedFilter)
+                    //si es objeto es porque ya hay un filtro aplicado
+                    combinedFilter = state.filter.filter(dog => typeof dog.id === 'number')
                 }
                 const filterApi = state.allDogs.filter(dog => typeof dog.id === 'number' );
                 return {
@@ -100,19 +99,17 @@ const reducer = (state = initialState, action)=>{
                     someDogs: combinedFilter.length ? combinedFilter : filterApi,
                     allDogs: state.allDogs,
                     filter: combinedFilter.length ? state.filter : ''
-                    //filter: 'api'
                 }
             }
             if (action.payload === 'created'){
                 const filterForm = state.allDogs.filter(dog => typeof dog.id !== 'number' );
                 if(typeof state.filter === 'object'){
+                    //si es obj hay filtro combinado
                     let combinedFilter = []
-                    console.log('combinedFilter')
                     combinedFilter = state.filter.filter(dog => typeof dog.id !== 'number' )
-                    console.log(combinedFilter)
-                    console.log(state.filter)
                     return {
                         ...state,
+                        //si no hay filtro combinado devuelve array vacio para que no falle el slice
                         someDogs: combinedFilter.length ? combinedFilter : [],
                         allDogs: state.allDogs,
                         filter: combinedFilter.length ? state.filter : '',
@@ -128,7 +125,7 @@ const reducer = (state = initialState, action)=>{
             break;
         case ORDER:
             if(action.payload === 'breedDesc'){
-                console.log('breedDesc')
+                //alfabeticamente descendiente
                 state.someDogs?.sort((a,b)=>{
                     if (a.name.toLowerCase() > b.name.toLowerCase()) {
                         return -1;
@@ -138,7 +135,6 @@ const reducer = (state = initialState, action)=>{
                       }
                       return 0;
                 })
-                console.log(state.someDogs[0])
                 return{
                     ...state,
                     someDogs: state.someDogs,
@@ -147,7 +143,7 @@ const reducer = (state = initialState, action)=>{
                 }
             }
             if(action.payload === 'breedAsc'){
-                console.log('breedAsc')
+                //alfabeticamente ascendente
                 const breedAsc = state.someDogs?.sort((a,b)=>{
                     if (a.name.toLowerCase() < b.name.toLowerCase()) {
                         return -1;
@@ -157,7 +153,6 @@ const reducer = (state = initialState, action)=>{
                       }
                       return 0;
                 })
-                console.log(breedAsc[0])
                 return{
                     ...state,
                     someDogs: breedAsc,
@@ -166,7 +161,7 @@ const reducer = (state = initialState, action)=>{
                 }
             }
             if(action.payload === 'weightAsc'){
-                console.log('weightAsc')
+                //ascendente por peso
                 const weightAsc = state.someDogs?.sort((a,b)=>{
                     if (Number(a.weight.split('-')[0]) < Number(b.weight.split('-')[0])) {
                         return -1;
@@ -176,7 +171,6 @@ const reducer = (state = initialState, action)=>{
                       }
                       return 0;
                 })
-                console.log(weightAsc[0])
                 return{
                     ...state,
                     someDogs: weightAsc,
@@ -185,7 +179,7 @@ const reducer = (state = initialState, action)=>{
                 }
             }
             if(action.payload === 'weightDesc'){
-                console.log('weightDesc')
+                //descendiente por peso
                 const weightDesc = state.someDogs?.sort((a,b)=>{
                     if (Number(a.weight.split('-')[0]) > Number(b.weight.split('-')[0])) {
                         return -1;
@@ -195,7 +189,6 @@ const reducer = (state = initialState, action)=>{
                       }
                       return 0;
                 })
-                console.log(weightDesc[0])
                 return{
                     ...state,
                     someDogs: weightDesc,

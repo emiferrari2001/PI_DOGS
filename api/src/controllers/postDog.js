@@ -7,8 +7,8 @@ const postDog = async (req, res) => {
     if (!image || !name || !height || !weight || !life_span)
       throw new Error('There is information missing in order to create a new dog');
 
-    if (!temperaments.length)
-      throw new Error('Please select at least one temperament for your dog');
+    // if (!temperaments.length)
+    //   throw new Error('Please select at least one temperament for your dog');
 
     const existingDog = await Dog.findOne({ where: { name } });
     if (existingDog)

@@ -22,8 +22,8 @@ const Filters = () => {
     },[dispatch])
 
     useEffect(()=>{
-        //console.log('cambia orden a', breedOrder);
-    },[breedOrder])
+       //actualiza el componente cuando cambia el orden de las breeds
+    },[breedOrder, weightOrder])
     
     
 

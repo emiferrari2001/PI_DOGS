@@ -28,7 +28,11 @@ export const SearchBar = ()=>{
     }
 
     useEffect(()=>{
-        if(error !== ''){
+        if(error.includes('API')){
+            setPopUp(true)
+            setPopUpMessage(error)
+        }
+        if(error !== '' && error.includes('dog')){
             setPopUp(true)
             setPopUpMessage(error)
             //si hay error me trae todos los perros de nuevo y los resetea

@@ -7,9 +7,10 @@ import PopUp from '../PopUp/PopUp';
 import styles from './Form.module.css'
 
 const Form = ()=>{
-
+    
     //traigo temperamentos del estado global
     const temperamentList = useSelector(state => state.temperaments);
+    const error = useSelector(state => state.error);
 
     const dispatch = useDispatch();
     
@@ -26,9 +27,33 @@ const Form = ()=>{
         image: '',
         weight: ['', ''],
         height: ['', ''],
-        temperament: '',
+        temperament: 'Please select at least one temperament for your dog',
         life_span: ''  
     })
+    
+    //disable submit
+    const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
+
+    const validateSubmit = () => {
+        setSubmitButtonDisabled(
+            //cambiar valor de submit al opuesto si se cumplen las condiciones
+          !(
+            errors.name === '' &&
+            errors.weight === '' &&
+            errors.height === '' &&
+            errors.temperament === '' &&
+            errors.life_span === ''
+          )
+        );
+      };
+      
+    useEffect(() => {
+      validateSubmit();
+      if(error !== ''){
+        setPopUp(true);
+        setPopUpMessage(error)
+      }
+    }, [errors, error]);
 
     useEffect(()=>{
         //si al inicializar el componente no hay temperaments cargados, los trae
@@ -85,7 +110,7 @@ const Form = ()=>{
                     ...dogData
                 })
             }
-          validate(name, value)  
+          validate(name, value)
     }
 
     const validate = (name, value) => {
@@ -146,7 +171,7 @@ const Form = ()=>{
             // El archivo seleccionado no es una imagen válida
             setErrors({
                 ...errors,
-                image: 'Please select a valid image file'
+                image: 'Please select a valid image file or preview image will be used'
             })
             document.imgdog.src = 'https://png.pngtree.com/png-vector/20191018/ourmid/pngtree-dog-logo-design-vector-icon-png-image_1824202.jpg';
             return;
@@ -179,7 +204,6 @@ const Form = ()=>{
         if(!foundAddedTemperament) {
             //si no se repite pusheo el id al array temperaments de dog data
             dogData.temperaments.push(foundTemperament.id);
-            console.log(dogData.temperaments)
 
             //el temperamento actual lo guardo como objeto
             const currTemperament = {
@@ -199,17 +223,24 @@ const Form = ()=>{
         }
       }
 
+    
+
       const deleteTemperament = (event) => {
-        //tomo el valor del id despues de 'del_'
-        const eliminateId = event.target.id.slice(4);
-        //filtro estado con temperamentos para eliminar el seleccionado
+          //tomo el valor del id despues de 'del_'
+          const eliminateId = event.target.id.slice(4);
+          //filtro estado con temperamentos para eliminar el seleccionado
         const updatedTemperaments = addedTemperaments.filter(temperament => temperament.id !== Number(eliminateId))
         setAddedTemperaments(updatedTemperaments);
         
         //tambien lo tengo que sacar del array de dogData
         const foundTemperament = temperamentList.find(temperament => temperament.id === Number(eliminateId))
         dogData.temperaments = dogData.temperaments.filter(temperament => temperament !== foundTemperament.id)
-      }
+        //si despues de eliminar el actual no tengo ningun temperamento en dogData.temperaments, muestro el error
+        if(!dogData.temperaments.length) setErrors({
+            ...errors,
+            temperament: 'Please select at least one temperament for your dog'
+        })
+    }
 
       const [popUp, setPopUp] = useState(false)
       const [popUpMessage, setPopUpMessage] = useState('')
@@ -218,12 +249,8 @@ const Form = ()=>{
             event.preventDefault();
             try {
                 if(typeof dogData.weight !== 'string') dogData.weight = dogData.weight.join(' - ')
-                if(typeof dogData.height !== 'string')dogData.height = dogData.height.join(' - ')
-                if(typeof dogData.life_span !== 'string')dogData.life_span = dogData.life_span + ' years';
-                console.log(dogData)
-                console.log('image' + dogData.image)
+                if(typeof dogData.height !== 'string') dogData.height = dogData.height.join(' - ')
               const response = await axios.post("http://localhost:3001/dogs", dogData);
-              console.log(response.data);
               if(response.data){
                 //reseteo el form y todos sus valores
                 const creationForm = document.getElementById("creationForm");
@@ -258,7 +285,6 @@ const Form = ()=>{
                     name: error.response.data.error.includes('name') ? error.response.data.error : errors.name,
                     temperament: error.response.data.error.includes('temperament') ? error.response.data.error : errors.temperament
                 })
-              //console.error(error.response.data.error);
             }
         
       };
@@ -278,7 +304,7 @@ const Form = ()=>{
                             <label htmlFor="name">Breed name</label><br/>
                             <input type="text" name="name" placeholder="Breed name" onChange={handleChanges} required/>
                             {
-                                errors.name !== '' && <p>{errors.name}</p>
+                                errors.name !== '' && <p className={styles.errorP}>{errors.name}</p>
                             }
                         </div>
                         <div>
@@ -298,7 +324,7 @@ const Form = ()=>{
                     </div>
                     <div>
                         {
-                        errors.weight !== '' && <p>{errors.weight}</p>
+                        errors.weight !== '' && <p className={styles.errorP}>{errors.weight}</p>
                         }
                     </div>
                     <div className={styles.subDiv}>
@@ -315,7 +341,7 @@ const Form = ()=>{
                     </div>
                     <div>
                         {
-                        errors.height !== '' && <p>{errors.height}</p>
+                        errors.height !== '' && <p className={styles.errorP}>{errors.height}</p>
                         }
                     </div>
                     <div className={styles.subDiv}>
@@ -345,7 +371,7 @@ const Form = ()=>{
                             )
                         }
                         {
-                            errors.temperament !== '' && <p>{errors.temperament}</p>
+                            errors.temperament !== '' && <p className={styles.errorP}>{errors.temperament}</p>
                         }
                     </div>
                     <div className={styles.subDiv}>
@@ -355,12 +381,12 @@ const Form = ()=>{
                                 <input type="file" id="file-input" onChange={handleImageChange} />
                             </div>
                             {
-                                errors.image !== '' && <p>{errors.image}</p>
+                                errors.image !== '' && <p className={styles.errorP}>{errors.image}</p>
                             }
                         </div>
                     </div>
 
-                    <button className={styles.submitButton}>Submit</button>
+                    <button className={styles.submitButton} id='submitButton' disabled={submitButtonDisabled}>Submit</button>
                 </div>
 
                 <div className={styles.oneThird}>

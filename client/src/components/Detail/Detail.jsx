@@ -37,7 +37,6 @@ const Detail = ()=>{
         //si hay error es porque del back viene como jpg entonces lo reemplazo
         event.target.src = event.target.src.replace(".jpg", ".png");
     }
-
     
 return(
     <div className={styles.allDetail}>
@@ -60,8 +59,9 @@ return(
                 </div>
                 <div className={styles.detailDivs}>
                     <h5>Lifespan<br />(years)</h5>
-                    {/* Quito la palabra 'Years' del lifespan si es que tiene */}
-                    <p>{dog.lifespan?.split(' years')}</p>
+                    {/* Quito la palabra 'Years' del lifespan si es que tiene. 
+                    Los perros de la DB no tienen*/}
+                    <p>{dog.lifespan?.split(' years') || <p>{dog.life_span}</p>}</p>
                 </div>
             </div>
             <h5>Temperaments:</h5>

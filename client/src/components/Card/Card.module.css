@@ -27,6 +27,11 @@
     overflow: hidden;
     text-overflow: ellipsis;
     margin: 0 5%;
+    transition: color 0.2s ease-in;
+}
+
+.cardContainer a:hover{
+    color: #ff7b29;
 }
 
 .cardContainer p{
