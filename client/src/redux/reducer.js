@@ -66,11 +66,11 @@ const reducer = (state = initialState, action)=>{
             console.log('filter origin')
             if (action.payload === 'All'){
                 let combinedFilter =[];
-                let aux = state.filter;
+                
                 console.log(state.filter)
                 if (typeof state.filter === 'object') {
-                    console.log('hay filter')
-                    combinedFilter = aux.filter(dog => dog.id )
+                    //hay un valor en el estado global filter
+                    combinedFilter = state.filter.filter(dog => dog.id )
                     console.log(combinedFilter)
                     return{
                         ...state,
@@ -88,11 +88,10 @@ const reducer = (state = initialState, action)=>{
             if (action.payload === 'api'){
                 console.log('typeof state.filter ',typeof state.filter)
                 let combinedFilter = [];
-                let aux = state.filter;
                 if(typeof state.filter === 'object'){
                     console.log('combinedFilter')
                     console.log(state.filter)
-                    combinedFilter = aux.filter(dog => typeof dog.id == 'number')
+                    combinedFilter = state.filter.filter(dog => typeof dog.id == 'number')
                     console.log(combinedFilter)
                 }
                 const filterApi = state.allDogs.filter(dog => typeof dog.id === 'number' );
@@ -105,21 +104,25 @@ const reducer = (state = initialState, action)=>{
                 }
             }
             if (action.payload === 'created'){
-                let combinedFilter = []
-                let aux = state.filter;
+                const filterForm = state.allDogs.filter(dog => typeof dog.id !== 'number' );
                 if(typeof state.filter === 'object'){
+                    let combinedFilter = []
                     console.log('combinedFilter')
-                    combinedFilter = aux.filter(dog => typeof dog.id !== 'number' )
+                    combinedFilter = state.filter.filter(dog => typeof dog.id !== 'number' )
                     console.log(combinedFilter)
                     console.log(state.filter)
+                    return {
+                        ...state,
+                        someDogs: combinedFilter.length ? combinedFilter : [],
+                        allDogs: state.allDogs,
+                        filter: combinedFilter.length ? state.filter : '',
+                        error: !combinedFilter.length ? 'There are no dogs with the selected temperament and origin' : ''
+                    }
                 }
-                const filterForm = state.allDogs.filter(dog => typeof dog.id !== 'number' );
                 return {
                     ...state,
-                    someDogs: combinedFilter.length ? combinedFilter : filterForm,
+                    someDogs: filterForm,
                     allDogs: state.allDogs,
-                    filter: combinedFilter.length ? state.filter : ''
-                    //filter: 'created'
                 }
             }
             break;

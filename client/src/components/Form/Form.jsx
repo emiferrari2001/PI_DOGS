@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
-import { allTemperaments } from "../../redux/actions";
+import { allTemperaments, allDogs } from "../../redux/actions";
 import PopUp from '../PopUp/PopUp';
 
 import styles from './Form.module.css'
@@ -248,13 +248,15 @@ const Form = ()=>{
                 });
                 setPopUp(true)
                 setPopUpMessage('Dog created successfully')
+                dispatch(allDogs())
                 //alert("Dog created successfully");
 
               }
             } catch (error) {
                 setErrors({
                     ...errors,
-                    temperament: error.response.data.error
+                    name: error.response.data.error.includes('name') ? error.response.data.error : errors.name,
+                    temperament: error.response.data.error.includes('temperament') ? error.response.data.error : errors.temperament
                 })
               //console.error(error.response.data.error);
             }

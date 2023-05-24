@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { searchDogs } from "../../redux/actions";
+import { searchDogs, resetDogs } from "../../redux/actions";
 
 import PopUp from "../PopUp/PopUp";
 
@@ -31,6 +31,11 @@ export const SearchBar = ()=>{
         if(error !== ''){
             setPopUp(true)
             setPopUpMessage(error)
+            //si hay error me trae todos los perros de nuevo y los resetea
+            dispatch(searchDogs(''))
+            dispatch(resetDogs())
+            document.getElementById("temperaments-select").value = "All";
+            document.getElementById("select-origin").value = "All";
         }
     }, [error, someDogs])
 

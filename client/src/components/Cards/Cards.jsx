@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { allDogs } from '../../redux/actions';
 import { useSelector, useDispatch } from "react-redux";
+
 import Card from '../Card/Card';
 
 import styles from './Cards.module.css';

@@ -1,55 +1,62 @@
-const {Dog} = require('../db');
-const {Temperament} = require('../db');
+const { Dog } = require('../db');
+const { Temperament } = require('../db');
 
-const postDog = async(req, res) =>{
-    const {image, name, height, weight, temperaments, life_span } = req.body;
-try {
-    if(!image || !name || !height || !weight || !life_span ) throw new Error('There is information missing in order to create a new dog');
-    if (!temperaments.length) throw new Error('Please select at least one temperament for your dog')
-    let temperament = []
-    const pushTemperaments = temperaments?.forEach(async(currTemp) => {
+const postDog = async (req, res) => {
+  const { image, name, height, weight, temperaments, life_span } = req.body;
+  try {
+    if (!image || !name || !height || !weight || !life_span)
+      throw new Error('There is information missing in order to create a new dog');
+
+    if (!temperaments.length)
+      throw new Error('Please select at least one temperament for your dog');
+
+    const existingDog = await Dog.findOne({ where: { name } });
+    if (existingDog)
+      throw new Error('A dog with that name already exists');
+
+    let temperament = [];
+
+    await Promise.all(
+        //espera a que se mapeen y agreguen TODOS los temperamentos
+      temperaments.map(async (currTemp) => {
+        //busca en DB temperamentos on el mismo id
         const tempIteration = await Temperament.findOne({ where: { id: currTemp } });
-        console.log(tempIteration.dataValues.temperament)
-        temperament.push(tempIteration.dataValues.temperament)
-    });
-    const newDog = await Dog.findOrCreate({
-        where: {
-            image, name, height, weight, life_span
-        },
-        defaults: {
-            image, name, height, weight, life_span
+        if (tempIteration) {
+          //pushea nombre del temperamento
+          temperament.push(tempIteration.dataValues.temperament);
         }
+      })
+    );
+
+    const newDog = await Dog.create({
+      image,
+      name,
+      height,
+      weight,
+      life_span,
     });
 
-    //le agrego propiedad a pesar de no poner su valor en la tabla de Dogs de la DB
-    //asi se lo puedo pasar al front
-    
-    
-    
-    // Obtengo instancia del perro creado
-    const dogInstance = newDog[0]; 
+    //guardo valores del perro creado en variable 
+    //para manipular directamente y agregar temperamentos
+    const dogInstance = newDog.dataValues;
 
-    // Busco temperamentos por ID y los asocio al perro
     const temperamentsInstances = await Temperament.findAll({
       where: { id: temperaments },
     });
 
-    await dogInstance.setTemperaments(temperamentsInstances);
+    //establece relacion entre el perro creado y sus temperamentos
+    await newDog.setTemperaments(temperamentsInstances);
 
     //al estar como array no me sirve para el front entonces lo paso a string
-    newDog[0].dataValues.temperament = temperament.join(', ');
+    dogInstance.temperament = temperament.join(', ');
 
-    console.log('temperaments')
-    console.log(newDog[0].dataValues)
-    return res.status(200).json(newDog);
-    
-} catch (error) {
-    //console.log(error.message);
+    return res.status(200).json(dogInstance);
+  } catch (error) {
+    //si el mensaje de error incluye "dog" es un error del usuario, no del server
     return error.message.includes('dog')
-        ? res.status(404).send({error: error.message})
-        // error del servidor: error 500
-        : res.status(500).send({error: error.message});
-}
-}
+      ? res.status(404).send({ error: error.message })
+      : res.status(500).send({ error: error.message });
+  }
+};
 
-module.exports= postDog;
+module.exports = postDog;
