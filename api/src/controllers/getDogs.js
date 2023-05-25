@@ -46,14 +46,11 @@ try {
       }
 
     if (name) {
-        console.log('hay name ', name);
         //filtro los valores de la API y de la DB por nombre
         const filteredDogsApi = allDogsApi.filter(dog => dog.name.toLowerCase().includes(name.toLowerCase()));
-        console.log(filteredDogsApi)
+        //console.log(filteredDogsApi)
         const filteredDogsDb = dbDog.filter(dog => dog.dataValues.name.toLowerCase().includes(name.toLowerCase()));
-        console.log(filteredDogsDb);
-        
-            if(!dbDog.length) console.log('no hay en db')
+        //console.log(filteredDogsDb);
 
             //si hay valores en la API y tambien en la DB, concateno los arrays
             if(filteredDogsApi.length && filteredDogsDb.length) return res.status(200).send([...filteredDogsApi, ...filteredDogsDb])
@@ -67,7 +64,6 @@ try {
             throw new Error('The name sent by query has no dogs associated to it');
     }
     //si no se pasa nombre por query
-    //console.log(typeof allDogsApi)
     const spreadApiDb = allDogsApi.concat(dbDog);
     if (allDogsApi) return res.status(200).send(Object.values(spreadApiDb));
 } catch (error) {

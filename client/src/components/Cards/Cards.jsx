@@ -12,6 +12,7 @@ const Cards = ({ currentPage, dogsPerPage }) => {
   //la lista de perros contiene a los actuales (someDogs)
   const allDogsList = useSelector(state => state.someDogs);
   const {order} = useSelector(state => state);
+  const pageNum = useSelector(state => state.currentPage)
   const [dogs, setDogs] = useState([]);
 
   //useCallback para que no tener dependencias faltantes
@@ -28,7 +29,7 @@ const Cards = ({ currentPage, dogsPerPage }) => {
     // Llamar a fetchDogs al montar el componente
     // y cuando se actualiza el order o filter
     fetchDogs();
-  }, [fetchDogs, order]);
+  }, [fetchDogs, order, pageNum]);
 
   useEffect(() => {
     // Dispatch de acción de Redux para obtener todos los perros

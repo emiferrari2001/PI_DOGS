@@ -18,7 +18,8 @@ const reducer = (state = initialState, action)=>{
             return {
                 ...newState,
                 someDogs: newState.allDogs,
-                filter: ''
+                filter: '',
+                currentPage: 1,
             };
         case ALL_DOGS:
             //si de las actions llega un error el payload es string
