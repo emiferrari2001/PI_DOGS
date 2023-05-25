@@ -8,14 +8,14 @@ const {Sequelize, Op } = require('sequelize');
 
 //ej de uso con api key: https://api.thedogapi.com/v1/breeds?api_key=live_Y1wWCrk2W2sIUyb72nLQgigiNk9LiKxhOoA9FRr9GZOjHaujrugZz2xaPbHVxKWb
 
-//console.log(URL)
 
 const getDogs = async(req, res) => {
     const {name} = req.query;
 try {
     const fetchApi = await axios(`${URL}?${API_KEY}`);
     let allDogsApi =[]
-    //console.log(fetchApi.data[0])
+    //mapea los resultados de la API, extrae los valores
+    //que me interesan y los pushea a un array
     fetchApi.data.map(dog=>{
         const currDog = {
             id: dog.id,
@@ -30,43 +30,33 @@ try {
     })
 
     //despues de recorrer la api, tengo que revisar la DB
+    // traigo todos los perros que tenga
     const dbDog = await Dog.findAll({
-        //  where: {
-        //      name: {
-        //         [Op.like]: `%${name}%`
-        //     }
-        //  }
     });
     for (const dog of dbDog) {
         //recorro los perros que obtengo de la base de datos y les agrego el temperamento
         const dogForTemperaments = await Dog.findByPk(dog.id);
+        //getter de temperamentos
         const currDogTemperaments = await dogForTemperaments.getTemperaments();
         const temperamentArray = [];
         currDogTemperaments.forEach((temperament) => {
           temperamentArray.push(temperament.dataValues.temperament);
         });
         dog.dataValues.temperament = temperamentArray.join(", ");
-        //console.log("dog", dog.dataValues);
       }
 
-    //const perro = await Dog.findByPk(dbDog[0].id)
-    //const temperaments = await perro.getTemperaments();
-    //console.log('TEMPERAMENT 1',temperaments[0].dataValues.temperament)
-    
-    //dbDog.forEach(async(dog) => console.log('DATAVALUES', await dog.dataValues));
-    
-    //console.log("DBDOG",dbDog);
     if (name) {
         console.log('hay name ', name);
         //filtro los valores de la API y de la DB por nombre
         const filteredDogsApi = allDogsApi.filter(dog => dog.name.toLowerCase().includes(name.toLowerCase()));
+        console.log(filteredDogsApi)
         const filteredDogsDb = dbDog.filter(dog => dog.dataValues.name.toLowerCase().includes(name.toLowerCase()));
-        console.log(filteredDogsApi.length);
+        console.log(filteredDogsDb);
         
             if(!dbDog.length) console.log('no hay en db')
 
             //si hay valores en la API y tambien en la DB, concateno los arrays
-            if(filteredDogsApi.length && filteredDogsDb.length) return res.status(200).send(...filteredDogsApi, ...filteredDogsDb)
+            if(filteredDogsApi.length && filteredDogsDb.length) return res.status(200).send([...filteredDogsApi, ...filteredDogsDb])
 
             if(filteredDogsApi.length && !filteredDogsDb.length) return res.status(200).send(filteredDogsApi)
 
