@@ -2,7 +2,7 @@ import { ALL_DOGS, ALL_TEMPERAMENTS, FILTER, FILTER_ORIGIN, ORDER, RESET, SEARCH
 import axios from 'axios';
 
 export const allDogs = ()=>{
-    const endpoint = 'http://localhost:3001/dogs';
+    const endpoint = 'https://dogsapi-bofo.onrender.com/dogs';
     return async (dispatch) => {
         try {
             const {data} = await axios.get(endpoint);
@@ -21,7 +21,7 @@ export const allDogs = ()=>{
 }
 
 export const searchDogs = (name)=>{
-    const endpoint = `http://localhost:3001/dogs?name=${name}`;
+    const endpoint = `https://dogsapi-bofo.onrender.com/dogs?name=${name}`;
     return async (dispatch) => {
         try {
             const {data} = await axios.get(endpoint);
@@ -39,7 +39,7 @@ export const searchDogs = (name)=>{
 }
 
 export const allTemperaments=()=>{
-    const endpoint = 'http://localhost:3001/temperament';
+    const endpoint = 'https://dogsapi-bofo.onrender.com/temperament';
     return async (dispatch) => {
         try {
            const {data} = await axios.get(endpoint);
