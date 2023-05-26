@@ -41,7 +41,7 @@ export const SearchBar = ()=>{
             document.getElementById("temperaments-select").value = "All";
             document.getElementById("select-origin").value = "All";
         }
-    }, [error, someDogs])
+    }, [error, someDogs, dispatch])
 
     return(
 
