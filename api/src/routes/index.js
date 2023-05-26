@@ -6,7 +6,6 @@ const postDog = require('../controllers/postDog')
 const router = require('express').Router();
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
-console.log('llega a rutas?')
 
 router.get('/dogs', getDogs);
 router.get('/dogs/:id', getDogByBreed);

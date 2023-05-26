@@ -28,13 +28,15 @@
 .orderContainer h3{
     color: #faf5ed;
     font-size: 1.6em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .orderContainer h4{
     font-style: italic;
     color: #faf5ed;
     font-weight: 400;
-    font-size: 1.2em;    
+    font-size: 1.2em; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);   
 }
 
 .breedContainer{
@@ -71,14 +73,16 @@ button:hover{
 
 .filterContainer h3{
     color: #faf5ed;
-    font-size: 1.6em;    
+    font-size: 1.6em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .filterContainer h4{
     font-style: italic;
     color: #faf5ed;
     font-weight: 400;
-    font-size: 1.2em;  
+    font-size: 1.2em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 .h4Title{
     margin-bottom: 5%;

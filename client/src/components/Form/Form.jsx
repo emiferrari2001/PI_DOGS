@@ -376,7 +376,7 @@ const Form = ()=>{
                     <div className={styles.subDiv}>
                         <div className={styles.divImg}>
                             <div className={styles.fileUpload}>
-                                <label for="file-input" name='file-input' className={styles.customButton}>Upload Image</label>
+                                <label htmlFor="file-input" name='file-input' className={styles.customButton}>Upload Image</label>
                                 <input type="file" id="file-input" onChange={handleImageChange} />
                             </div>
                             {
@@ -395,8 +395,6 @@ const Form = ()=>{
                         
                     </div>
                 </div>
-
-
 
             </form>
         </div>
