@@ -34,20 +34,21 @@ const Form = ()=>{
     //disable submit
     const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
 
-    const validateSubmit = () => {
-        setSubmitButtonDisabled(
-            //cambiar valor de submit al opuesto si se cumplen las condiciones
-          !(
-            errors.name === '' &&
-            errors.weight === '' &&
-            errors.height === '' &&
-            errors.temperament === '' &&
-            errors.life_span === ''
-          )
-        );
-      };
+    
       
     useEffect(() => {
+        const validateSubmit = () => {
+            setSubmitButtonDisabled(
+                //cambiar valor de submit al opuesto si se cumplen las condiciones
+              !(
+                errors.name === '' &&
+                errors.weight === '' &&
+                errors.height === '' &&
+                errors.temperament === '' &&
+                errors.life_span === ''
+              )
+            );
+          };
       validateSubmit();
       if(error !== ''){
         setPopUp(true);
@@ -221,9 +222,7 @@ const Form = ()=>{
                 temperament: ''
             })
         }
-      }
-
-    
+      }    
 
       const deleteTemperament = (event) => {
           //tomo el valor del id despues de 'del_'

@@ -10,6 +10,7 @@ import styles from './Home.module.css'
 const Home = () =>{
     const allDogsList = useSelector(state => state.someDogs);
     const page = useSelector(state => state.currentPage);
+    const {order} = useSelector(state=> state)
 
     const dispatch = useDispatch();
 
@@ -25,15 +26,15 @@ const Home = () =>{
   };
 
   useEffect(() =>{
-    setCurrentPage(1) //cuando se actualiza la lista de perros, la pagina de paginacion se vuelve 1
-    dispatch(setPageNumber(1))
-  },[allDogsList, dispatch])
+    //cuando se actualiza la lista de perros o el orden, la pagina de paginacion se vuelve 1
+    setCurrentPage(1) 
+    //dispatch(setPageNumber(1))
+  },[allDogsList, order])
 
   useEffect(()=>{
+    //cuando se actualiza el numero de pagina actualizo el componente y la muestro
     setCurrentPage(page)
-    //cuando se desmonta el componente le paso page
-    return page;
-  }, [])
+  }, [page])
 
 
     return(

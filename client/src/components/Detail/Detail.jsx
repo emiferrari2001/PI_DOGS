@@ -61,7 +61,7 @@ return(
                     <h5>Lifespan<br />(years)</h5>
                     {/* Quito la palabra 'Years' del lifespan si es que tiene. 
                     Los perros de la DB no tienen*/}
-                    <p>{dog.lifespan?.split(' years') || <p>{dog.life_span}</p>}</p>
+                    <p>{dog.lifespan?.split(' years') || dog.life_span}</p>
                 </div>
             </div>
             <h5>Temperaments:</h5>

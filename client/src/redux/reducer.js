@@ -7,7 +7,7 @@ const initialState = {
     order: '',
     filter: '',
     error: '',
-    currentPage: 1
+    currentPage: ''
 }
 
 const reducer = (state = initialState, action)=>{

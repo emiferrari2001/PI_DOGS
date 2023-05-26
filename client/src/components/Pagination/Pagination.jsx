@@ -1,15 +1,12 @@
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
 
 import styles from './Pagination.module.css'
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 
-  const pageNum = useSelector(state => state.currentPage)
   useEffect(()=>{
-    console.log(pageNum)
     //actualizo el componente cuando cambia la cantidad de paginas
-  }, [totalPages, pageNum])  
+  }, [totalPages])  
   
   const pageNumbers = [];
   
