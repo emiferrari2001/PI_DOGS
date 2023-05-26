@@ -2,6 +2,7 @@ const express = require('express');
 const server = express();
 const routes = require('./routes/index.js');
 const morgan = require('morgan');
+const cors = require('cors');
 
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -19,6 +20,8 @@ server.use(cookieParser());
 //MIDDLEWARE
 server.use(express.json());
 server.use(morgan('dev'));
+
+server.use(cors()); // habilitar CORS
 
 server.use((req, res, next) => {
   const allowedOrigins = [
