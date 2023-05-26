@@ -23,7 +23,7 @@ server.use(morgan('dev'));
 server.use((req, res, next) => {
   const allowedOrigins = [
     'http://localhost:3000',
-    'https://proyecto-indiv-dogs-emiferrari2001.netlify.app',
+    'https://64701c3ea8e401000884c58b--proyecto-indiv-dogs-emiferrari2001.netlify.app',
     'http://localhost:5100'
   ];
   const origin = req.headers.origin;
